@@ -1,0 +1,31 @@
+
+# SN~Iax from Saurabh
+## M Vincenzi corrected the models for E(B-V)=0.09
+## M Vincenzi added dust model from R14 (see Vincenszi et al 2020)
+
+INPUT_FILE_INCLUDE:  SIMGEN_SDSS_INCLUDE.INPUT
+
+GENTYPE:  11
+### GENMODEL: $PLASTICC_MODELS/SIMSED_BINARIES/SIMSED.SNIax_SDSS-ugriz.BINARY
+GENMODEL: $PLASTICC_ROOT/model_libs_updates/SIMSED.SNIax
+GENVERSION: BP-PS1-NONIA
+
+SIMSED_USE_BINARY:   1
+### SIMSED_PATH_BINARY:  /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BBC_paper_2/SDSS_usable/MVCC/SIMSED_BINARIES
+SIMSED_PATH_BINARY:  $PLASTICC_MODELS/SIMSED_BINARIES
+
+# Volumetric rate
+DNDZ: MD14  6.0E-6      # MD14 SFR(z), with 6E-6/yr/Mpc^3 at z=0
+
+# random pick of each SED sequence
+SIMSED_GRIDONLY:  Iax_INDEX
+
+GENRANGE_AV: 0.001 3.
+GENTAU_AV: 1.7
+GENSIG_AV: 0.6
+GENRATIO_AV0: 4.
+
+GENPEAK_RV: 3.1
+GENRANGE_RV: 3.0 3.2
+
+

@@ -1,0 +1,102 @@
+# ========================================
+# DES sim file SALT2-SNIa: for BCD paper
+#
+#
+# ===========================================
+
+GENTYPE: 1  
+
+SIMLIB_FILE: $SNDATA_ROOT/simlib/SDSS/SDSS_3year.SIMLIB
+#SIMLIB_FIELDLIST: E1+E2+S1+S2+C1+C2+X1+X2
+
+# ----------------- host info ---------------
+HOSTLIB_FILE:   /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BBC_paper/NNinp_CCx1_Dan/BRODIE_WRONGHOST_1.HOSTLIB
+#HOSTLIB_WGTMAP_FILE: MAGSHIFT.DAT
+HOSTLIB_GENRANGE_NSIGZ: -3. +3.  # not yet implemented
+HOSTLIB_MSKOPT:     14     
+#HOSTLIB_STOREPAR: r_obs
+HOSTLIB_DZTOL: .04 0 0
+HOSTLIB_SERSIC_SCALE: 1.3
+
+SOLID_ANGLE:  0.08     # 200ish sq deg
+
+EXPOSURE_TIME: 1
+
+NGENTOT_LC:  1000
+GENVERSION:  BP-ZEROPT
+GENSOURCE:   RANDOM   
+GENMODEL:    SALT2.JLA-B14
+#GENMAG_SMEAR_MODELNAME:  G10
+
+OPT_MWEBV: 3
+
+GENFILTERS:  ugriz
+#KCOR_FILE:   SDSS/SDSS_Doi2010/kcor_SDSS_Bessell90_BD17.fits
+KCOR_FILE:  /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/PANTHEON+/kcor/v6_1/kcor_SDSS_v6_1.fits
+
+# selection criteria for generation
+GENRANGE_PEAKMJD: 53600.0   54450.0  # Y1 only
+GENSIGMA_SEARCH_PEAKMJD:  1.0     # sigma-smearing for  SEARCH_PEAKMJD (days)
+
+GENRANGE_TREST:  -20  60
+
+GENRANGE_REDSHIFT:  0.03 .55
+GENSIGMA_REDSHIFT:  0.0005 
+
+RANSEED: 12945       # random number seed
+
+# smear flags: 0=off, 1=on
+SMEARFLAG_FLUX:    1  # photo-stat smearing of signal, sky, etc ...
+SMEARFLAG_ZEROPT:  1  # smear zero-point with zptsig
+
+
+APPLY_SEARCHEFF_OPT: 5
+NEWMJD_DIF: 0.4
+
+SEARCHEFF_SPEC_FILE:   SEARCHEFF_SPEC_ZERO.DAT 
+#SEARCHEFF_zHOST_FILE:  /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/SEARCHEFF_zHOST_SDSS_PerfEff.DAT 
+SEARCHEFF_zHOST_FILE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BBC_paper_2/SDSS_usable/SEARCHEFF_ZHOST_MAG_NEW.DAT
+
+APPLY_CUTWIN_OPT: 1
+CUTWIN_NEPOCH:   5 -5.              # require 5 epochs (no S/N requirement)
+CUTWIN_SNRMAX:   5 griz 2 -20. 60.  # 3 filters with SNRAMX>3
+
+CUTWIN_TRESTMIN: -25 +5 # at least 1 epoch before -5 d (rest-frame)
+CUTWIN_TRESTMAX: +5 +1000000
+CUTWIN_SNRMAX:   5 griz 2 -20. 80.  # require 1 of griz with S/N > 5
+
+#SIMGEN_DUMPALL:  29
+#  CID GENTYPE  SNTYPE  NON1A_INDEX  GENZ GALZTRUE
+#  LIBID RA DECL MWEBV MU MJD0  
+#  MAGT0_g MAGT0_r MAGT0_i MAGT0_z 
+#  SNRMAX_g SNRMAX_r SNRMAX_i SNRMAX_z SNRMAX SNRMAX2 SNRMAX3 
+#  NOBS TRESTMIN TRESTMAX TGAPMAX  
+#  CUTMASK  SIM_EFFMASK 
+ # HOSTMAG_g HOSTMAG_r HOSTMAG_i HOSTMAG_z
+ # SBFLUX_g  SBFLUX_r  SBFLUX_i  SBFLUX_z
+# ======
+
+
+FORMAT_MASK:  32  # 2=terse  8=BLIND  16=CIDRAN; 32=FITS
+
+#EXPOSURE_TIME:  1
+
+GENRANGE_RA:      -180.   360.0   deg
+GENRANGE_DECL:    -90.   90 deg 
+
+#DNDZ:  POWERLAW2  1.3E-3   1.5  0.00 0.08  # low-z spike (e.g., Foundation)
+#DNDZ:  POWERLAW2  2.6E-5   1.5  0.08 1.00  # R0(1+z)^Beta Zmin-Zmax
+#DNDZ:  POWERLAW2  7.35E-5  0.0  1.00 2.00
+#DNDZ: POWERLAW  2.6E-5  2.2    # SNLS result
+DNDZ: POWERLAW2 1.8E-5   2.15  0.0   1.0  # rate = R0(1+z)^Beta for z<1
+
+
+# For alpha, beta, generate delta function for training.
+# Use grid for biasCor sample. Note that GENSIGMA here is zero
+# so that command-line override sets GENSIGMA>0 for biasCor,
+
+GENMEAN_SALT2ALPHA:   0.14
+GENMEAN_SALT2BETA:   3.2
+
+
+# ----------------------
