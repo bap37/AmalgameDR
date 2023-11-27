@@ -1,0 +1,555 @@
+# Original input file: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BS20-PHOT/ANALYSIS/PANOPTICON-V7.yml
+ALIAS:
+  OPT_SNLCINP: &opt_snlcinp
+     USE_MINOS: T
+     OPT_SETPKMJD: 20
+     RV_MWCOLORLAW: 3.1
+     OPT_MWCOLORLAW: 99
+     OPT_MWEBV: 2
+     MWEBV_SCALE: 0.86
+     MWEBV_SHIFT: 0.0
+     SNTABLE_LIST: 'FITRES(text:host) LCPLOT(text:csv)'
+
+  CUTWIN_TREST: &cutwin_trest
+     cutwin_Trestmin: -9999.0   5.0
+     cutwin_Trestmax: 5.   99999.
+
+  CUTWIN_TREST: &cutwin_trest_highz
+     cutwin_Trestmin: -9999.0   5.0
+     cutwin_Trestmax: 0.   99999.
+
+  CUTWIN_TREST_PEAKCUT: &cutwin_trest_peakcut
+     cutwin_Trestmin: -9999.0   0.0
+     cutwin_Trestmax: 5.   99999.
+
+  OPT_FITINP: &opt_fitinp
+     PRIOR_SHAPE_RANGE: -6.0, 6.0
+     FITWIN_SHAPE: -5.0, +5.0
+     FITWIN_COLOR: -0.5, +0.5
+     FITWIN_PROB:  0.0,  1.01
+     FITWIN_TREST:  -15.0, 45.0
+  
+  S3FIT: &s3fit
+     FITMODEL_NAME: '/project2/rkessler/SURVEYS/DES/ROOT/SALT3training/OUT_TRAIN_SALT3_systCovar_unoU/SALT3.MODEL000'
+     RESTLAMBDA_FITRANGE: 3500.0 8700.0
+
+
+  APPENDFITRES: &appendfitres
+      APPEND_TABLE_VARLIST: RA DEC HOST_RA HOST_DEC HOST_ANGSEP TGAPMAX TrestMIN TrestMAX
+
+  BBC7D: &bbc7d
+    interp_biascor_logmass: 0
+    logmass_min: -15
+    nbin_logmass: 2  ## changed to 4 as I don't think my sims are big enough for now   
+    logmass_max: 35
+    u2: 1
+    opt_biascor: 112 # used to be 6256
+
+  BBC4D: &bbc4d
+    interp_biascor_logmass: 0
+    logmass_min: -15
+    nbin_logmass: 2
+    logmass_max: 35
+    opt_biascor: 4336
+    u2: 3
+    sig1: 0.01 
+
+OVERRIDES: &overrides
+     HEADER_OVERRIDE_FILE: '/project2/rkessler/SURVEYS/DES/ROOT/analysis_photoIa_5yr/overrides/override_vpec.txt, /project2/rkessler/SURVEYS/DES/ROOT/analysis_photoIa_5yr/overrides/HOSTGAL_LOGMASS.txt,/project2/rkessler/SURVEYS/DES/ROOT/analysis_photoIa_5yr/overrides/HOSTGAL_sSFR.txt,/project2/rkessler/SURVEYS/DES/ROOT/analysis_photoIa_5yr/overrides/VPEC.txt,/project2/rkessler/SURVEYS/DES/ROOT/analysis_photoIa_5yr/overrides/VPEC_ERR.txt, /project2/rkessler/SURVEYS/DES/ROOT/analysis_photoIa_5yr/overrides/REDSHIFT_CMB.txt,/project2/rkessler/SURVEYS/DES/ROOT/analysis_photoIa_5yr/overrides/REDSHIFT_CMB_ERR.txt,/project2/rkessler/SURVEYS/DES/USERS/mvincenzi/update_data_files/override_LOWZ_hostgal_complete_UR.dat'
+
+DATAPREP:
+  DATAPS1: #Panstarrs
+    OPTS:  
+      RAW_DIR: $PS1_ROOT/lcmerge/PS1_PS1MD_cen_SIGCLIP_FITS     
+      TYPES:   
+        IA: [1, 101]   
+        NONIA: [120, 130, 20, 30]   
+      BLIND: True
+
+  DATASDSS:
+    OPTS:  
+      RAW_DIR: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/FITS/lcmerge/SDSS_allCandidates+BOSS_P19  
+      TYPES:     
+        IA: [1, 101]  
+        NONIA: [120, 130, 20, 30]    
+      BLIND: True
+
+SIM: 
+  SDSSSIMBIAS_4D_P21:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-SDSS-NOSYS-4D/1_SIM/SDSS
+  SDSSSIMBIAS_4D_BC1:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-SDSS-BC1/1_SIM/SDSS
+  SDSSSIMBIAS_4D_BC2:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-SDSS-BC2/1_SIM/SDSS
+  SDSSSIMBIAS_4D_BC3:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-SDSS-BC3/1_SIM/SDSS
+  SDSSSIMBIAS_4D_DETEFF:  
+    EXTERNAL: $PIPPIN_OUTPUT/BP-SDSS-BCX/1_SIM/SDSS 
+  SDSSSYSEFFZ_4D_P21:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-SDSS-SYSEFFZ-4D/1_SIM/SDSS-ZSYS
+  SDSSSCC:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-SDSS-CLASS/1_SIM/SDSS
+######### 
+  PS1SIMBIAS_4D_P21:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-PS1-NOSYS-4D/1_SIM/PS1-DUST
+  PS1SIMBIAS_4D_BC1:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-PS1-BC1/1_SIM/PS1-DUST
+  PS1SIMBIAS_4D_BC2:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-PS1-BC2/1_SIM/PS1-DUST
+  PS1SIMBIAS_4D_BC3:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-PS1-BC3/1_SIM/PS1-DUST
+  PS1SYSEFFZ_4D_P21:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-PS1-SYSEFFZ-4D/1_SIM/PS1-DUST
+  PS1SCC:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-PS1-CLASS/1_SIM/PS1
+  SDSSSIM_P21:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-SDSS-MOCK/1_SIM/SIMDATASDSS_P21
+  SDSSSIM_G10:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-SDSS-MOCK/1_SIM/SIMDATASDSS_G10
+  SDSSSIM_C11:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-SDSS-MOCK/1_SIM/SIMDATASDSS_C11
+  PS1SIM_P21:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-PS1-MOCK/1_SIM/SIMDATAPS1_P21
+  PS1SIM_G10:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-PS1-MOCK/1_SIM/SIMDATAPS1_G10
+  PS1SIM_C11:
+    EXTERNAL: $PIPPIN_OUTPUT/BP-PS1-MOCK/1_SIM/SIMDATAPS1_C11
+
+LCFIT:
+  P3:      
+    BASE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BBC_paper_2/PS1_DATA/ps1phot_sys.nml     
+    MASK: PS1S
+    EXTERNAL_DIRS:
+      - $PIPPIN_OUTPUT/BP-PS1-NOSYS-4D/2_LCFIT/PS1FIT_PS1-DUST 
+      - $PIPPIN_OUTPUT/BP-PS1-SYSEFFZ-4D/2_LCFIT/PS1FIT_PS1-DUST
+      - $PIPPIN_OUTPUT/BP-PS1-CLASS/2_LCFIT/PS1FIT_PS1
+      - $PIPPIN_OUTPUT/BP-PS1-NOSYS-4D/2_LCFIT/PS1FIT_PS1-DUST
+      - $PIPPIN_OUTPUT/BP-PS1-MOCK/2_LCFIT/P3_SIMDATAPS1_G10
+      - $PIPPIN_OUTPUT/BP-PS1-MOCK/2_LCFIT/P3_SIMDATAPS1_C11
+      - $PIPPIN_OUTPUT/BP-PS1-MOCK/2_LCFIT/P3_SIMDATAPS1_P21
+      - $PIPPIN_OUTPUT/BP-PS1-BC1/2_LCFIT/PS1FIT_PS1-DUST
+      - $PIPPIN_OUTPUT/BP-PS1-BC2/2_LCFIT/PS1FIT_PS1-DUST 
+      - $PIPPIN_OUTPUT/BP-PS1-BC3/2_LCFIT/PS1FIT_PS1-DUST 
+    EXTERNAL_MAP:    
+      P3_PS1SIMBIAS_4D_P21: BP-PS1-NOSYS-4D
+      P3_PS1SYSEFFZ_4D_P21: BP-PS1-SYSEFFZ-4D     
+      P3_PS1SCC: BP-PS1-CLASS
+      P3_PS1SIM_G10: P3_SIMDATAPS1_G10
+      P3_PS1SIM_C11: P3_SIMDATAPS1_C11
+      P3_PS1SIM_P21: P3_SIMDATAPS1_P21
+      P3_PS1SIMBIAS_4D_BC1: BP-PS1-BC1 
+      P3_PS1SIMBIAS_4D_BC2: BP-PS1-BC2
+      P3_PS1SIMBIAS_4D_BC3: BP-PS1-BC3
+    OPTS:    
+      BATCH_MEM: 8000         
+      BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 10 
+
+  Psys: 
+    BASE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BBC_paper_2/PS1_DATA/ps1phot_sys.nml          
+    MASK: DATAPS1     
+    SNLCINP:
+      <<: *opt_snlcinp     
+      <<: *cutwin_trest_highz     
+      ROOTFILE_OUT: 'PS1.root'    
+      HEADER_OVERRIDE_FILE: '/project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BS20-PHOT/DATA/PS1-MASS-OVERRIDE.V1.DAT'
+    FITOPTS:      
+      - /project2/rkessler/SURVEYS/DES/ROOT/analysis_photoIa_5yr/base/fitopts_pasdronomy.yml     
+    FITINP:  
+      <<: *opt_fitinp  
+      <<: *s3fit 
+    OPTS:  
+      <<: *appendfitres    
+      OPT_SNCID_LIST: 1      
+      BATCH_MEM: 8000
+      BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 10
+
+  S3:    
+    BASE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BBC_paper_2/SDSS_usable/SNFIT_MASTER.NML
+    MASK: SDSSS
+    EXTERNAL_DIRS:
+      - $PIPPIN_OUTPUT/BP-SDSS-NOSYS-4D/2_LCFIT/SDSSFIT_SDSS
+      - $PIPPIN_OUTPUT/BP-SDSS-SYSEFFZ-4D/2_LCFIT/SDSSFIT_SDSS-ZSYS
+      - $PIPPIN_OUTPUT/BP-SDSS-CLASS/2_LCFIT/SDSSFIT_SDSS/
+      - $PIPPIN_OUTPUT/BP-SDSS-MOCK/2_LCFIT/S3_SIMDATASDSS_G10
+      - $PIPPIN_OUTPUT/BP-SDSS-MOCK/2_LCFIT/S3_SIMDATASDSS_C11
+      - $PIPPIN_OUTPUT/BP-SDSS-MOCK/2_LCFIT/S3_SIMDATASDSS_P21
+      - $PIPPIN_OUTPUT/BP-SDSS-BC1/2_LCFIT/SDSSFIT_SDSS
+      - $PIPPIN_OUTPUT/BP-SDSS-BC2/2_LCFIT/SDSSFIT_SDSS
+      - $PIPPIN_OUTPUT/BP-SDSS-BC3/2_LCFIT/SDSSFIT_SDSS 
+      - $PIPPIN_OUTPUT/BP-SDSS-BCX/2_LCFIT/SDSSFIT_SDSS
+    EXTERNAL_MAP:
+      S3_SDSSSIMBIAS_4D_P21: BP-SDSS-NOSYS-4D
+      S3_SDSSSYSEFFZ_4D_P21: SDSSFIT_SDSS-ZSYS
+      S3_SDSSSCC: BP-SDSS-CLASS
+      S3_SDSSSIM_G10: S3_SIMDATASDSS_G10
+      S3_SDSSSIM_C11: S3_SIMDATASDSS_C11
+      S3_SDSSSIM_P21: S3_SIMDATASDSS_P21
+      S3_SDSSSIMBIAS_4D_BC1: BP-SDSS-BC1
+      S3_SDSSSIMBIAS_4D_BC2: BP-SDSS-BC2
+      S3_SDSSSIMBIAS_4D_BC3: BP-SDSS-BC3
+      S3_SDSSSIMBIAS_4D_DETEFF: BP-SDSS-BCX
+    OPTS:       
+      BATCH_MEM: 8000     
+      BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 10 
+
+  Ssys:  
+    BASE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BBC_paper_2/SDSS_usable/SNFIT_MASTER.NML
+    MASK: DATASDSS
+    SNLCINP:
+      <<: *opt_snlcinp  
+      <<: *cutwin_trest_highz  
+      HEADER_OVERRIDE_FILE: '/project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BS20-PHOT/DATA/SDSS-MASS-OVERRIDE.V1.DAT'
+      ROOTFILE_OUT: 'SDSS.root'   
+    FITOPTS:   
+      - /project2/rkessler/SURVEYS/DES/ROOT/analysis_photoIa_5yr/base/fitopts_pasdronomy.yml    
+    FITINP:  
+      <<: *opt_fitinp  
+      <<: *s3fit  
+    OPTS:      
+      <<: *appendfitres 
+      OPT_SNCID_LIST: 1     
+      BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 10
+
+CLASSIFICATION:
+  PERFECT:
+    CLASSIFIER: PerfectClassifier
+    MODE: predict
+    OPTS:
+      PROB_IA: 1.0
+      PROB_CC: 0.0
+#    EXTERNAL_DIRS:
+#      - SDSS and PS1 stuff here?
+
+  SNN_PS1:
+    CLASSIFIER: SuperNNovaClassifier
+    MODE: predict
+    GPU: True
+    MASK: PS1
+    OPTS:
+      MODEL: /scratch/midway2/rkessler/PIPPIN_OUTPUT/BP-PS1-CLASS/3_CLAS/PROBIA_PS1/model.pt
+      VARIANT: vanilla # --> same option used in the training
+      REDSHIFT: True  # --> same option used in the training
+      NORM: cosmo_quantile  # --> same option used in the training      
+      BATCH_REPLACE:
+        REPLACE_MEM: 64GB
+        REPLACE_WALLTIME: "30:00:00"
+
+  SNN_SDSS:
+    CLASSIFIER: SuperNNovaClassifier
+    MODE: predict
+    GPU: True
+    MASK: SDSS
+    OPTS:
+      MODEL: /scratch/midway2/rkessler/PIPPIN_OUTPUT/BP-SDSS-CLASS/3_CLAS/PROBIA_SDSS/model.pt
+      VARIANT: vanilla # --> same option used in the training
+      REDSHIFT: True  # --> same option used in the training
+      NORM: cosmo_quantile  # --> same option used in the training
+      BATCH_REPLACE:
+        REPLACE_MEM: 64GB
+        REPLACE_WALLTIME: "30:00:00"
+
+
+AGGREGATION:
+  AGG:
+    MERGE_CLASSIFIERS:
+        # Can either be a single mask, or a list of masks.
+        # If a classifier isn't included it will just use the default value PROB_CLASSIFIER_TASK_NAME
+        # Will crash if a classifier matches to multiple merge keys
+        PROB_SNN: [SNN_PS1, SNN_SDSS]
+
+
+MERGE:
+  MERGE:
+
+BIASCOR:
+  SIM_P21:
+    BASE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BS20-PHOT/ANALYSIS/PAN-SALT2mu.input
+    DATA: [ L3_LOWZSIM_P21, S3_SDSSSIM_P21, F3_FOUNDSIM_P21, P3_PS1SIM_P21]
+    SIMFILE_BIASCOR: [L3_LOWZSIMBIAS_4D_P21, F3_FOUNDSIMBIAS_4D_P21, P3_PS1SIMBIAS_4D_P21, S3_SDSSSIMBIAS_4D_P21]
+    SIMFILE_CCPRIOR: [P3_PS1SCC, S3_SDSSSCC] #from the training samples
+    CLASSIFIER: PROB_SNN
+    CONSISTENT_SAMPLE: True
+    STRINGMATCH_IGNORE: PIP_BP-LOWRED-MOCK_SIMDATALOWZ_P21 PIP_BP-SDSS-MOCK_SIMDATASDSS_P21  PIP_BP-LOWRED-MOCK_SIMDATAFOUND_P21 PIP_BP-PS1-MOCK_SIMDATAPS1_P21
+    MUOPTS:
+      ZEFF:
+        SIMFILE_BIASCOR: [L3_LOWZSIMBIAS_4D_P21, F3_FOUNDSIMBIAS_4D_P21, P3_PS1SYSEFFZ_4D_P21, S3_SDSSSYSEFFZ_4D_P21] 
+      DETEFF:                         
+        SIMFILE_BIASCOR: [L3_LOWZSIMBIAS_4D_P21, F3_FOUNDSIMBIAS_4D_P21, P3_PS1SIMBIAS_4D_P21, S3_SDSSSIMBIAS_4D_DETEFF] 
+      MASSSTEPLOC:
+        OPTS:
+          p7: 10.2
+      ALPHAEVOL:
+        OPTS:
+          u3: 1
+      BETAEVOL:
+        OPTS:
+          u4: 1
+          <<: *bbc4d
+      SNN_H11:
+        CLASSIFIER: PROB_SNN
+        OPTS:
+          simfile_ccprior: H11
+          u17: 1
+          u20: 1
+      FIXED:
+        OPTS:
+          u1: 0
+          u2: 0
+          p1: 0.13956
+          p2: 2.78429
+      BC1:
+        SIMFILE_BIASCOR: [L3_LOWZSIMBIAS_4D_BC1, F3_FOUNDSIMBIAS_4D_BC1, P3_PS1SIMBIAS_4D_BC1, S3_SDSSSIMBIAS_4D_BC1]
+      BC2:
+        SIMFILE_BIASCOR: [L3_LOWZSIMBIAS_4D_BC2, F3_FOUNDSIMBIAS_4D_BC2, P3_PS1SIMBIAS_4D_BC2, S3_SDSSSIMBIAS_4D_BC2]
+      BC3:
+        SIMFILE_BIASCOR: [L3_LOWZSIMBIAS_4D_BC3, F3_FOUNDSIMBIAS_4D_BC3, P3_PS1SIMBIAS_4D_BC3, S3_SDSSSIMBIAS_4D_BC3]
+    OPTS:
+      BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 30
+      BATCH_MEM: 32000
+      u5: 1 #fit for mass step
+      p8: 0.001
+      chi2max: 16
+      iflag_duplicate: 0
+      ndump_nobiascor: 500
+      fitflag_sigmb: 2
+      <<: *bbc4d
+      nmax: 514(SDSS),1021(PS1MD),156(FOUNDATION),30(CSP),29(CFA3S),53(CFA3K),30(CFA4p1),10(CFA4p2)
+
+  DATA_HIGHZ:
+    BASE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BS20-PHOT/ANALYSIS/PAN-SALT2mu.input
+    DATA: [Ssys_DATASDSS, Psys_DATAPS1]
+    SIMFILE_BIASCOR: [P3_PS1SIMBIAS_4D_P21, S3_SDSSSIMBIAS_4D_P21] #for initial error budget, nearly anything
+    SIMFILE_CCPRIOR: [P3_PS1SCC, S3_SDSSSCC] #from the training samples
+    CLASSIFIER: PROB_SNN
+    CONSISTENT_SAMPLE: True
+    MUOPTS:
+      ZEFF:
+        SIMFILE_BIASCOR: [P3_PS1SYSEFFZ_4D_P21, S3_SDSSSYSEFFZ_4D_P21]
+      DETEFF:               
+        SIMFILE_BIASCOR: [P3_PS1SIMBIAS_4D_P21, S3_SDSSSIMBIAS_4D_DETEFF] 
+      MASSSTEPLOC:
+        OPTS:
+          p7: 10.2
+      ALPHAEVOL:
+        OPTS:
+          u3: 1
+      BETAEVOL:
+        OPTS:
+          u4: 1
+          <<: *bbc4d
+      SNN_H11:
+        CLASSIFIER: PROB_SNN
+        OPTS:
+          simfile_ccprior: H11
+          u17: 1
+          u20: 1
+      FIXED:
+        OPTS:
+          u1: 0
+          u2: 0
+          p1: 0.13956
+          p2: 2.78429
+      BC1:
+        SIMFILE_BIASCOR: [P3_PS1SIMBIAS_4D_BC1, S3_SDSSSIMBIAS_4D_BC1]
+      BC2:
+        SIMFILE_BIASCOR: [P3_PS1SIMBIAS_4D_BC2, S3_SDSSSIMBIAS_4D_BC2]
+      BC3:
+        SIMFILE_BIASCOR: [P3_PS1SIMBIAS_4D_BC3, S3_SDSSSIMBIAS_4D_BC3]
+    OPTS:
+      BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 30
+      BATCH_MEM: 32000
+      u5: 1 #fit for mass step
+      p8: 0.001
+      chi2max: 16
+      iflag_duplicate: 0
+      ndump_nobiascor: 500
+      fitflag_sigmb: 2
+      <<: *bbc4d
+
+  DATA_PS1:
+    BASE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BS20-PHOT/ANALYSIS/PAN-SALT2mu.input
+    DATA: [Psys_DATAPS1]
+    SIMFILE_BIASCOR: [P3_PS1SIMBIAS_4D_P21] #for initial error budget, nearly anything 
+    SIMFILE_CCPRIOR: [P3_PS1SCC] #from the training samples
+    CLASSIFIER: PROB_SNN
+    CONSISTENT_SAMPLE: True
+    MUOPTS:
+      ZEFF:
+        SIMFILE_BIASCOR: [P3_PS1SYSEFFZ_4D_P21] 
+      DETEFF:
+        SIMFILE_BIASCOR: [P3_PS1SIMBIAS_4D_P21]
+      MASSSTEPLOC:
+        OPTS:
+          p7: 10.2
+      ALPHAEVOL:
+        OPTS:
+          u3: 1
+      BETAEVOL:
+        OPTS:
+          u4: 1
+          <<: *bbc4d
+      SNN_H11:
+        CLASSIFIER: PROB_SNN
+        OPTS:
+          simfile_ccprior: H11
+          u17: 1
+          u20: 1
+      FIXED:
+        OPTS:
+          u1: 0
+          u2: 0
+          p1: 0.13956
+          p2: 2.78429
+      BC1:
+        SIMFILE_BIASCOR: [P3_PS1SIMBIAS_4D_BC1]
+      BC2:
+        SIMFILE_BIASCOR: [P3_PS1SIMBIAS_4D_BC2]
+      BC3:
+        SIMFILE_BIASCOR: [P3_PS1SIMBIAS_4D_BC3]
+    OPTS:
+      BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 30
+      BATCH_MEM: 32000
+      u5: 1 #fit for mass step
+      p8: 0.001
+      chi2max: 16
+      iflag_duplicate: 0
+      ndump_nobiascor: 500
+      fitflag_sigmb: 2
+      <<: *bbc4d
+
+  DATA_SDSS:
+    BASE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BS20-PHOT/ANALYSIS/PAN-SALT2mu.input
+    DATA: [Ssys_DATASDSS]
+    SIMFILE_BIASCOR: [S3_SDSSSIMBIAS_4D_P21] #for initial error budget, nearly anything 
+    SIMFILE_CCPRIOR: [S3_SDSSSCC] #from the training samples
+    CLASSIFIER: PROB_SNN
+    CONSISTENT_SAMPLE: True
+    MUOPTS:
+      ZEFF:
+        SIMFILE_BIASCOR: [S3_SDSSSYSEFFZ_4D_P21] 
+      DETEFF:
+        SIMFILE_BIASCOR: [S3_SDSSSIMBIAS_4D_DETEFF]
+      MASSSTEPLOC:
+        OPTS:
+          p7: 10.2
+      ALPHAEVOL:
+        OPTS:
+          u3: 1
+      BETAEVOL:
+        OPTS:
+          u4: 1
+          <<: *bbc4d
+      SNN_H11:
+        CLASSIFIER: PROB_SNN
+        OPTS:
+          simfile_ccprior: H11
+          u17: 1
+          u20: 1
+      FIXED:
+        OPTS:
+          u1: 0
+          u2: 0
+          p1: 0.13956
+          p2: 2.78429
+      BC1:
+        SIMFILE_BIASCOR: [S3_SDSSSIMBIAS_4D_BC1]
+      BC2:
+        SIMFILE_BIASCOR: [S3_SDSSSIMBIAS_4D_BC2]
+      BC3:
+        SIMFILE_BIASCOR: [S3_SDSSSIMBIAS_4D_BC3]
+    OPTS:
+      BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 30
+      BATCH_MEM: 32000
+      u5: 1 #fit for mass step
+      p8: 0.001
+      chi2max: 16
+      iflag_duplicate: 0
+      ndump_nobiascor: 500
+      fitflag_sigmb: 2
+      <<: *bbc4d
+
+CREATE_COV:
+  ALL_DATA:
+    MASK: DATA
+    OPTS:
+      MUOPT_SCALES:
+        BC1: 0.577
+        BC2: 0.577
+        BC3: 0.577
+      SUBTRACT_VPEC: False
+      BATCH_MEM: 16GB
+      BINNED: False
+      EXTRA_COVS:
+        - "VPEC_2MRS_DIAG .7 $PS1MD_USERS/dscolnic/PANTHEON+/2mrs_stat_v2.cov"
+        - "VPEC_DARCY_DIAG .7 $PS1MD_USERS/dscolnic/PANTHEON+/darcy_stat_v2.cov"
+        - "VPEC_DARCY_OFFDIAG .7 $PS1MD_USERS/dscolnic/PANTHEON+/darcy_smoothed_v2.cov"
+      COVOPTS:
+        - "[NOSYS] [=DEFAULT,=DEFAULT]"
+        - "[ZEFF] [=DEFAULT,=ZEFF]"
+        - "[DETEFF] [=DEFAULT,=DETEFF]"
+        - "[MWEBV] [=MWEBV,=DEFAULT]"
+        - "[CAL_SALT3] [+cal,=DEFAULT]"
+        - "[CALSPEC] [=CALSPEC,=DEFAULT]"
+        - "[ZSHIFT] [=zshift,=DEFAULT]"
+        - "[MASSLOC] [=DEFAULT,+MASS]"
+        - "[ALPHAEVOL] [=DEFAULT,=ALPHAEVOL]"
+        - "[BETAEVOL] [=DEFAULT,=BETAEVOL]"
+        - "[SNN_H11] [=DEFAULT,+SNN_H11]"
+        - "[COLORLAW] [=COLORLAW,=DEFAULT]"
+        - "[VPEC] [=DEFAULT,+VPEC]"
+        - "[FIXED] [=DEFAULT,=FIXED]"
+        - "[BC1] [=DEFAULT,=BC1]"
+        - "[BC2] [=DEFAULT,=BC2]"
+        - "[BC3] [=DEFAULT,=BC3]"
+      BATCH_REPLACE:
+        REPLACE_WALLTIME: "30:00:00"
+
+  ALL_SIM:
+    MASK: SIM_P21
+    OPTS:
+      SUBTRACT_VPEC: False
+      BATCH_MEM: 16GB
+      BINNED: False
+      COVOPTS:
+        - "[NOSYS] [=DEFAULT,=DEFAULT]"
+        - "[ZEFF] [=DEFAULT,=ZEFF]"
+        - "[DETEFF] [=DEFAULT,=DETEFF]"
+        - "[MASSLOC] [=DEFAULT,+MASS]"
+        - "[ALPHAEVOL] [=DEFAULT,=ALPHAEVOL]"
+        - "[BETAEVOL] [=DEFAULT,=BETAEVOL]"
+        - "[SNN_H11] [=DEFAULT,+SNN_H11]"
+        - "[FIXED] [=DEFAULT,=FIXED]"
+        - "[BC1] [=DEFAULT,=BC1]"
+        - "[BC2] [=DEFAULT,=BC2]"
+        - "[BC3] [=DEFAULT,=BC3]"
+      BATCH_REPLACE:
+        REPLACE_WALLTIME: "30:00:00"
+
+COSMOFIT:
+  WFIT:
+    SN_CMB_OMW:
+      MASK: DATA
+      OPTS:
+        BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 40
+        WFITOPTS:
+          - /cmb_pri/ -cmb_sim -sigma_Rcmb 0.007 -speed_flag_chi2 0 # Optionally include as many other fitopts as you want.
+          - /cmb18_pri/ -cmb_sim -sigma_Rcmb 0.0057 -speed_flag_chi2 0 # Optionally include as many other fitopts a$
+          - /OM_M/ -wmin -1.01 -wmax -0.99 -wsteps 2 -hsteps 121 -speed_flag_chi2 0
+
+    SN_CMB_OMW_REBINNED:
+      MASK: REBINNED
+      OPTS:
+        BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 40
+        WFITOPTS:
+          - /cmb_pri/ -cmb_sim -sigma_Rcmb 0.007 -speed_flag_chi2 0 # Optionally include as many other fitopts as you want.
+          - /cmb18_pri/ -cmb_sim -sigma_Rcmb 0.0057 -speed_flag_chi2 0 # Optionally include as many other fitopts a$
+          - /OM_M/ -wmin -1.01 -wmax -0.99 -wsteps 2 -hsteps 121 -speed_flag_chi2 0
+
+    SN_CMB_OMW_BINNED:
+      MASK: BINNED
+      OPTS:
+        BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 40
+        WFITOPTS:
+          - /cmb_pri/ -cmb_sim -sigma_Rcmb 0.007 -speed_flag_chi2 0 # Optionally include as many other fitopts as you want.
+          - /cmb18_pri/ -cmb_sim -sigma_Rcmb 0.0057 -speed_flag_chi2 0 # Optionally include as many other fitopts a$
+          - /OM_M/ -wmin -1.01 -wmax -0.99 -wsteps 2 -hsteps 121 -speed_flag_chi2 0
