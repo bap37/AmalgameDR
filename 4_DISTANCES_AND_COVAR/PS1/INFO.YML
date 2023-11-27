@@ -1,0 +1,34 @@
+COVOPTS:
+  0: ALL                  covsys_000.txt.gz
+  1: NOSYS                covsys_001.txt.gz
+  2: ZEFF                 covsys_002.txt.gz
+  3: DETEFF               covsys_003.txt.gz
+  4: MWEBV                covsys_004.txt.gz
+  5: CAL_SALT3            covsys_005.txt.gz
+  6: CALSPEC              covsys_006.txt.gz
+  7: ZSHIFT               covsys_007.txt.gz
+  8: MASSLOC              covsys_008.txt.gz
+  9: ALPHAEVOL            covsys_009.txt.gz
+  10: BETAEVOL             covsys_010.txt.gz
+  11: SNN_H11              covsys_011.txt.gz
+  12: COLORLAW             covsys_012.txt.gz
+  13: VPEC                 covsys_013.txt.gz
+  14: FIXED                covsys_014.txt.gz
+  15: BC1                  covsys_015.txt.gz
+  16: BC2                  covsys_016.txt.gz
+  17: BC3                  covsys_017.txt.gz
+HD: hubble_diagram.txt
+ISDATA_REAL: 1
+SNANA_VERSION: v11_05d-56-g3aef08b
+VERSION_PHOTOMETRY(BIASCOR):
+- PIP_BP-PS1-NOSYS-4D_PS1-DUST
+VERSION_PHOTOMETRY(CCPRIOR):
+- PIP_BP-PS1-CLASS_PS1
+VERSION_PHOTOMETRY(DATA):
+- PS1_PS1MD_cen_SIGCLIP_FITS
+COSPAR_BIASCOR:
+  MUSHIFT: 0
+  OMEGA_LAMBDA: 0.685
+  OMEGA_MATTER: 0.315
+  w0_LAMBDA: -1.0
+  wa_LAMBDA: 0
