@@ -1,0 +1,25 @@
+ANCHORS_LCFIT:
+  OPT_SNLCINP: &opt_snlcinp
+     USE_MINOS: F
+     OPT_SETPKMJD: 20
+     RV_MWCOLORLAW: 3.1
+     OPT_MWCOLORLAW: 99
+     OPT_MWEBV: 3
+     SNTABLE_LIST: 'FITRES(text:host) LCPLOT(text:csv)'
+
+  CUTWIN_TREST: &cutwin_trest
+     cutwin_Trestmin: -9999.0   5.0
+     cutwin_Trestmax: 5.   99999.
+
+  OPT_FITINP: &opt_fitinp
+     PRIOR_SHAPE_RANGE: -6.0, 6.0
+     FITWIN_SHAPE: -5.0, +5.0
+     FITWIN_COLOR: -0.5, +0.5
+     FITWIN_PROB:  0.0,  1.01
+     FITWIN_TREST:  -15.0, 45.0
+
+  APPENDFITRES: &appendfitres
+      APPEND_TABLE_VARLIST: RA DEC HOST_RA HOST_DEC HOST_ANGSEP TGAPMAX TrestMIN TrestMAX
+
+  S3FIT: &s3fit
+     FITMODEL_NAME: '/project2/rkessler/PRODUCTS/SNDATA_ROOT/models/SALT2/SALT2.JLA-T21'

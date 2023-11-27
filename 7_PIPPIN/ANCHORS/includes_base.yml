@@ -1,0 +1,50 @@
+# Values surround by % indicate preprocessing steps.
+# The preprocess below will copy the provided yml files into this one before this one is read in, allowing anchors to propegate into this file
+# They will be copied in, in the order you specify, with duplicate tasks merging.
+# Note that whitespace before or after the % is fine, as long as % is the first and last character.
+
+# % include: /project2/rkessler/SURVEYS/DES/USERS/parmstrong/dev/pippin-pa/debug/includes/includes_anchors_sim.yml %
+# %include: /project2/rkessler/SURVEYS/DES/USERS/parmstrong/dev/pippin-pa/debug/includes/includes_anchors_lcfit.yml%
+
+DATAPREP:
+
+  DATADES3YR:  # 3yr spec sample
+    OPTS:
+      RAW_DIR: $SNDATA_ROOT/lcmerge/DES-SN3YR_DES 
+      TYPES:
+        IA: [1, 101]
+        NONIA: [120, 130, 20, 30]
+      BLIND: False
+  DATALOWZ3YR:  # 3yr spec sample
+    OPTS:
+      RAW_DIR: $SNDATA_ROOT/lcmerge/DES-SN3YR_LOWZ
+      TYPES:
+        IA: [1, 101]
+        NONIA: [120, 130, 20, 30]
+      BLIND: False
+
+
+SIM:
+  DESSIM:
+    IA_G10_DES3YR:
+      BASE: surveys/des/sims_ia/sn_ia_salt2_g10_des3yr.input
+    GLOBAL:
+      <<: *SIM_GLOBAL
+  LCSIM:
+    IA_G10_LOWZ:
+      BASE: surveys/lowz/sims_ia/sn_ia_salt2_g10_lowz.input
+    GLOBAL:
+      <<: *SIM_GLOBAL
+
+LCFIT:
+  LS:
+    BASE: surveys/lowz/lcfit_nml/lowz.nml
+    MASK: DATALOWZ
+    FITOPTS: surveys/lowz/lcfit_fitopts/lowz.yml
+    <<: *LCFIT_OPTS
+    
+  DS:
+    BASE: surveys/des/lcfit_nml/des_3yr.nml
+    MASK: DATADES
+    FITOPTS: surveys/des/lcfit_fitopts/des.yml
+    <<: *LCFIT_OPTS
