@@ -1,0 +1,49 @@
+# % include: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BS20-PHOT/ANCHORS/includes_anchors_sim.yml %      
+# % include: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BS20-PHOT/ANCHORS/includes_anchors_lcfit.yml %  
+
+SIM:         
+  SDSS:        
+    IA:          
+      BASE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BBC_paper_2/SDSS_usable/SIMGEN_SDSS_SALT2_data.input 
+      <<: *sdssdefault                                  
+      <<: *iadata
+      <<: *bs20
+      <<: *s3model
+      GENPDF_FILE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BS20-PHOT/DUST2DUST/PASDronomy_BC1.GENPDF
+      HOSTLIB_FILE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BBC_paper_2/PHOT_HOSTLIBS/SDSS-PHOT-BS20.HOSTLIB
+    GLOBAL:
+      NGEN_UNIT: 100
+      RANSEED_REPEAT: 50 12333 
+      BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 50
+
+LCFIT:
+  SDSSFIT:
+    BASE: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/BBC_paper_2/SDSS_usable/SNFIT_MASTER.NML
+    MASK: SDSS
+    SNLCINP:
+      <<: *opt_snlcinp
+      <<: *cutwin_trest
+      ROOTFILE_OUT: 'SDSS.root'
+    FITINP:
+      <<: *opt_fitinp
+      <<: *s3fit
+    OPTS:
+      <<: *appendfitres
+      OPT_SNCID_LIST: 1
+      BATCH_MEM: 8000
+      BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_Midway2b.TEMPLATE 50
+
+CLASSIFICATION:
+  PERFECT:                       
+    CLASSIFIER: PerfectClassifier   
+    MODE: predict          
+    OPTS:     
+      PROB_IA: 1.0 
+      PROB_CC: 0.0   
+
+AGGREGATION:
+  AGG:
+
+MERGE:
+  MERGE:
+
