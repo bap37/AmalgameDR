@@ -1,0 +1,43 @@
+DOCUMENTATION:                                    
+    PURPOSE: Efficiency for SNIa host galaxy detection             
+    INTENT:     Nominal                           
+    USAGE_KEY:  HOSTEFF
+    USAGE_CODE: snlc_sim.exe                      
+    VALIDATE_SCIENCE: used in P21c analysis       
+    VERSIONS:                                     
+    - DATE:  2021                                 
+      AUTHORS: B. Popovic                         
+DOCUMENTATION_END:                               
+#####  
+VARNAMES: r_obs HOSTEFF
+HOSTEFF: 0.5 1
+HOSTEFF: 1.5 1
+HOSTEFF: 2.5 1
+HOSTEFF: 3.5 1
+HOSTEFF: 4.5 1
+HOSTEFF: 5.5 1
+HOSTEFF: 6.5 1
+HOSTEFF: 7.5 1
+HOSTEFF: 8.5 1
+HOSTEFF: 9.5 1
+HOSTEFF: 10.5 0.4
+HOSTEFF: 11.5 0.4
+HOSTEFF: 12.5 .2
+HOSTEFF: 13.5 0.4
+HOSTEFF: 14.5 0.5
+HOSTEFF: 15.5 0.6
+HOSTEFF: 16.5 1
+HOSTEFF: 17.5 1
+HOSTEFF: 18.5 .9
+HOSTEFF: 19.5 .8616
+HOSTEFF: 20.5 .65225
+HOSTEFF: 21.5 .280
+HOSTEFF: 22.5 .085
+HOSTEFF: 23.5 0
+HOSTEFF: 24.5 0
+HOSTEFF: 25.5 0
+HOSTEFF: 26.5 0
+HOSTEFF: 27.5 0
+HOSTEFF: 28.5 0
+HOSTEFF: 29.5 0
+HOSTEFF: 30.5 0 
