@@ -1,1 +1,3 @@
-test
+There are two directories here, corresponding to our inputs and chains with and without the Planck 2018 constraints. 
+
+The chains themselves are gzipped and start with AMALGAME-*
