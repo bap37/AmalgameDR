@@ -1,0 +1,9 @@
+Overview of simulations 
+  - 10 realizations of SDSS and PS1 samples
+  - Generated in LambdaCDM
+  - Generated with P23 scatter model as in the Amalgame paper
+
+PHOTOMETRY/
+  - Light curve photometry
+  - Generated with SALT3
+ 
