@@ -4,7 +4,6 @@ The official Amalgame Cosmological Sample Data Release
 
 1_DATA
   - light curve photometry
-  - redshifts
   - updated metadata to override what is in files
   
 2_CALIBRATION
