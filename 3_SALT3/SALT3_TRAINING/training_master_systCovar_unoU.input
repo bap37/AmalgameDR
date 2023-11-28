@@ -1,0 +1,26 @@
+# created by GT to apply shifts to "unoU" baseline surface
+# note that these shifts are different to the first iteration (on the full SALT3.FRAG surface)
+
+CONFIG:
+  BATCH_INFO:  sbatch  $SBATCH_TEMPLATES/SBATCH_Midway2a.TEMPLATE 10
+  BATCH_MEM:   40GB
+#  BATCH_WALLTIME: 30:00:00  # 30hr
+  JOBNAME:     trainsalt
+  OUTDIR:      OUT_TRAIN_SALT3_systCovar_unoU
+
+  SALT3_CONFIG_FILE:  Train_SALT3_PanPlus_calib_unoU.conf
+
+  TRAINOPT_GLOBAL: --fit_model_err True --gaussnewton_maxiter 6 --resume_from_outputdir /project2/rkessler/SURVEYS/DES/USERS/gtaylor/SALT3_TRAINING/SALT3-K21-Frag-unoU/output
+
+  TRAINOPT:
+  - SHIFTLIST_FILE  $DES_ROOT/SALT3training/calib_shiftlists_inclowZ/calib_saltshaker_0.txt
+  - SHIFTLIST_FILE  $DES_ROOT/SALT3training/calib_shiftlists_inclowZ/calib_saltshaker_1.txt
+  - SHIFTLIST_FILE  $DES_ROOT/SALT3training/calib_shiftlists_inclowZ/calib_saltshaker_2.txt
+  - SHIFTLIST_FILE  $DES_ROOT/SALT3training/calib_shiftlists_inclowZ/calib_saltshaker_3.txt
+  - SHIFTLIST_FILE  $DES_ROOT/SALT3training/calib_shiftlists_inclowZ/calib_saltshaker_4.txt
+  - SHIFTLIST_FILE  $DES_ROOT/SALT3training/calib_shiftlists_inclowZ/calib_saltshaker_5.txt
+  - SHIFTLIST_FILE  $DES_ROOT/SALT3training/calib_shiftlists_inclowZ/calib_saltshaker_6.txt
+  - SHIFTLIST_FILE  $DES_ROOT/SALT3training/calib_shiftlists_inclowZ/calib_saltshaker_7.txt
+  - SHIFTLIST_FILE  $DES_ROOT/SALT3training/calib_shiftlists_inclowZ/calib_saltshaker_8.txt
+
+#END_YAML
