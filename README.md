@@ -1,7 +1,6 @@
 # AmalgameDR
 The official Amalgame Cosmological Sample Data Release
 
-(Borrowed the layout from P+ - hi people that are reading the old history ! :D )
 
 1_DATA
   - light curve photometry
@@ -9,9 +8,8 @@ The official Amalgame Cosmological Sample Data Release
   - updated metadata to override what is in files
   
 2_CALIBRATION
-  - fragilistic covariance
   - kcor files
-  - filters
+  - (fragilistic covariance available from P+ data release)
 
 3_SALT2MODEL
   - trained nominal model
